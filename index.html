@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <title>ระบบตรวจจับการหลับตา</title>
+  <title>ระบบตรวจจับการหลับตา (MediaPipe + เสียงเตือน)</title>
   <style>
     body {
       background: #101010;
@@ -15,8 +15,8 @@
     video, canvas {
       border: 1px solid #444;
       margin-top: 10px;
-      max-width: 100%;
-      height: auto;
+      width: 640px;
+      height: 480px;
     }
   </style>
 
@@ -27,7 +27,7 @@
 </head>
 
 <body>
-  <h2>ระบบตรวจจับการหลับตาจ่ะ</h2>
+  <h2>ระบบตรวจจับการหลับตา (MediaPipe + เสียงเตือน)</h2>
   <p id="status">สถานะ: กรุณาคลิกที่หน้าเว็บเพื่อเปิดเสียง</p>
 
   <video id="video" autoplay playsinline muted></video>
@@ -43,7 +43,7 @@
 
     let soundEnabled = false;
 
-  
+    // ✅ ต้องคลิกหน้าเว็บหนึ่งครั้งเพื่ออนุญาตเสียง
     document.body.addEventListener("click", () => {
       alarm.play().then(() => {
         alarm.pause();
@@ -61,8 +61,7 @@
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        await new Promise(r => (video.onloadedmetadata = r))
-      video.addEventListener("loadeddata", () => {
+        await new Promise(r => (video.onloadedmetadata = r));
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         statusEl.innerText = "✅ กล้องพร้อมแล้ว (คลิกหน้าเว็บเพื่ออนุญาตเสียง)";
@@ -85,6 +84,7 @@
 
     faceMesh.onResults(onResults);
 
+    // ======== ฟังก์ชันคำนวณ EAR (Eye Aspect Ratio) =========
     function euclidean(a, b) {
       return Math.sqrt(
         Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2)
@@ -99,8 +99,8 @@
     }
 
     let closedFrames = 0;
-    const EAR_THRESHOLD = 0.21; 
-    const FRAME_THRESHOLD = 8; 
+    const EAR_THRESHOLD = 0.21; // ถ้าต่ำกว่านี้ถือว่าหลับตา
+    const FRAME_THRESHOLD = 8; // ต้องหลับตาติดต่อกันกี่เฟรมถึงจะเตือน
     let lastAlarm = 0;
 
     function onResults(results) {
@@ -164,5 +164,4 @@
     startCamera().then(() => camera.start());
   </script>
 </body>
-
 </html>
