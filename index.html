@@ -15,7 +15,7 @@
     video, canvas {
       border: 1px solid #444;
       margin-top: 10px;
-      width: 680px;
+      max-width: 100%;
       height: auto;
     }
   </style>
@@ -61,7 +61,8 @@
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        await new Promise(r => (video.onloadedmetadata = r));
+        await new Promise(r => (video.onloadedmetadata = r))
+      video.addEventListener("loadeddata", () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         statusEl.innerText = "✅ กล้องพร้อมแล้ว (คลิกหน้าเว็บเพื่ออนุญาตเสียง)";
@@ -165,6 +166,7 @@
 </body>
 
 </html>
+
 
 
 
