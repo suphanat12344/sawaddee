@@ -15,8 +15,9 @@
     video, canvas {
       border: 1px solid #444;
       margin-top: 10px;
-      max-width: 100%;
+      width: 100%;
       height: auto;
+      display: block;
     }
   </style>
 
@@ -106,7 +107,7 @@
     function onResults(results) {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(results.image, 0, 0, canvas.clientwidth, canvas.clientheight);
 
       if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
         const landmarks = results.multiFaceLandmarks[0];
@@ -166,6 +167,7 @@
 </body>
 
 </html>
+
 
 
 
