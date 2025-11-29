@@ -62,8 +62,7 @@
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        await new Promise(r => (video.onloadedmetadata = r))
-      video.addEventListener("loadeddata", () => {
+        await new Promise(r => (video.onloadedmetadata = r ));
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         statusEl.innerText = "✅ กล้องพร้อมแล้ว (คลิกหน้าเว็บเพื่ออนุญาตเสียง)";
@@ -167,6 +166,7 @@
 </body>
 
 </html>
+
 
 
 
